@@ -14,6 +14,7 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
 import { ONasComponent } from './o-nas/o-nas.component';
 import { RejestracjaComponent } from './rejestracja/rejestracja.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

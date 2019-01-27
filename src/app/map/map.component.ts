@@ -7,7 +7,6 @@ import { MarkerLabel, MouseEvent } from 'C:/Users/Dream Machines/a-pir/node_modu
 import { FitBoundsAccessor, FitBoundsDetails } from '@agm/core/services/fit-bounds';
 import * as mapTypes from '@agm/core/services/google-maps-types';
 import { MarkerManager } from '@agm/core/services/managers/marker-manager';
-import { InfoWindowManager } from '@agm/core/services/managers/info-window-manager';
 
 
 declare var google: any;
@@ -41,15 +40,14 @@ export class MapComponent implements OnInit {
       lat: 52.202737,
       lng: 21.001095,
       value: 11,
-      iconUrl: "http://labs.google.com/ridefinder/images/mm_20_orange.png "
+      iconUrl: "http://labs.google.com/ridefinder/images/mm_20_green.png "
     },
     zoom: 13
   };
- 
+
   @ViewChild(AgmMap) map: AgmMap;
 
   constructor(public mapsApiLoader: MapsAPILoader,
-    _infoWindowManager: InfoWindowManager,
     private zone: NgZone,
     private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
