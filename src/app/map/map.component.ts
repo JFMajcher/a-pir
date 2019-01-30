@@ -37,53 +37,10 @@ const redIcon: string = "http://labs.google.com/ridefinder/images/mm_20_red.png 
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
+  
+  @ViewChild(AgmMap) map: AgmMap;
+
   geocoder: any;
-
-  getLocations(): Marker[]{
-    var url="http://localhost:8080/markers";
-    var markers: Marker[];
-    // this.httpClient.get(url).subscribe((res : Marker[])=>{
-    //   markers = res;
-      // res.forEach(
-      //   val => {
-      //     var marker: Marker = {
-      //       lat: val["lat"],
-      //       lng: val["lng"],
-      //       iconUrl: greenIcon,
-      //       value: val["value"]
-      //     }
-      //     markers.push(marker);
-      //   }
-      // )
-    // });
-    var result: Marker[] = [];
-    var marker: Marker;
-    // this.httpClient.get(url).subscribe(data => {
-    //   console.log(data)
-    //   result = data
-    // });
-    this.httpClient.get<Marker[]>(url).subscribe(data => {
-      data.forEach(element => {
-        
-        if(element.value < 10) {
-          element.iconUrl = greenIcon;
-        }
-        else if(element.value >= 10 && element.value < 20) {
-          element.iconUrl = yellowIcon;
-        }
-        else if(element.value >= 20 && element.value < 30) {
-          element.iconUrl = orangeIcon;
-        }
-        else if(element.value >= 30) {
-          element.iconUrl = redIcon;
-        }
-
-        result.push(element)
-      });
-    })
-
-    return result;
-  }
 
   public mapStartup: Location = {
     lat: 52.202737,
@@ -91,30 +48,8 @@ export class MapComponent implements OnInit {
     zoom: 13
   }
 
-  public location: Marker = {
-    lat: 52.202737,
-    lng: 21.001095,
-    value: 11,
-    iconUrl: greenIcon
-  };
-
-  public location2: Marker = {
-    lat: 52.209999,
-    lng: 21.009999,
-    value: 40,
-    iconUrl: orangeIcon
-  };
-
-  // public locations: Marker[] = [
-  //   this.location,
-  //   this.location2
-  // ];
-
   public locations: Marker[] = this.getLocations();
-  // public dupa = this.getLocations();
-
-  @ViewChild(AgmMap) map: AgmMap;
-
+  
   constructor(public mapsApiLoader: MapsAPILoader,
     private zone: NgZone,
     private wrapper: GoogleMapsAPIWrapper,
@@ -128,11 +63,33 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.httpClient.get('https://api.github.com/users/seeschweiler').subscribe(data => {
-    //   console.log(data)
-    // })
-    // this.httpClient.get('http://localhost:8080/markers').subscribe(data => {
-    //   console.log(data)
-    // })
+  }
+
+  getLocations(): Marker[]{
+    var url="http://localhost:8080/markers";
+    var result: Marker[] = [];
+    this.httpClient.get<Marker[]>(url).subscribe(data => {
+      data.forEach(element => {
+        element.iconUrl = this.resolveIconUrl(element.value);
+        result.push(element)
+      });
+    })
+
+    return result;
+  }
+
+  resolveIconUrl(value: number): string {
+    if(value < 10) {
+      return greenIcon;
+    }
+    else if(value >= 10 && value < 20) {
+      return yellowIcon;
+    }
+    else if(value >= 20 && value < 30) {
+      return orangeIcon;
+    }
+    else if(value >= 30) {
+      return redIcon;
+    }
   }
 }
