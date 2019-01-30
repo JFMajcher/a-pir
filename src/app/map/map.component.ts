@@ -3,7 +3,7 @@ import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { MarkerLabel, MouseEvent } from 'C:/Users/Dream Machines/a-pir/node_modules/map-types';
+import { MarkerLabel, MouseEvent } from 'node_modules/map-types';
 import { FitBoundsAccessor, FitBoundsDetails } from '@agm/core/services/fit-bounds';
 import * as mapTypes from '@agm/core/services/google-maps-types';
 import { MarkerManager } from '@agm/core/services/managers/marker-manager';
