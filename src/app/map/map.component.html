@@ -1,13 +1,16 @@
 <!--<div ng-if="location.marker.value <= 12 && time < 12" location.marker.Urlx="location.marker.Url1"> </div> tu coś próbowałem, ale nie działa-->
-<agm-map [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom" [disableDefaultUI]="true" [zoomControl]="true" [(fitBounds)]='location.viewport'>
-  <agm-marker [(latitude)]="location.marker.lat"
-              [(longitude)]="location.marker.lng"
-              [iconUrl]="location.marker.iconUrl1">
-    <agm-info-window [disableAutoPan]="true">
-      <p>Współrzędne geograficzne czujnika: {{location.marker.lat}}N, {{location.marker.lng}}E.</p>
-      <p>Zanieczyszczenie powietrza: {{location.marker.value}}.</p>
-    </agm-info-window>
-  </agm-marker>
+<agm-map [(latitude)]="mapStartup.lat" [(longitude)]="mapStartup.lng" [(zoom)]="mapStartup.zoom" [disableDefaultUI]="true"
+  [zoomControl]="true" [(fitBounds)]='mapStartup.viewport'>
+
+  <ul>
+    <li *ngFor="let location of locations">
+      <agm-marker [(latitude)]="location.lat" [(longitude)]="location.lng" [iconUrl]="location.iconUrl">
+        <agm-info-window [disableAutoPan]="true">
+          <p>Współrzędne geograficzne czujnika: {{location.lat}}N, {{location.lng}}E.</p>
+          <p>Zanieczyszczenie powietrza: {{location.value}}.</p>
+        </agm-info-window>
+      </agm-marker>
+    </li>
+  </ul>
+
 </agm-map>
-
-
