@@ -39,14 +39,24 @@ const redIcon: string = "http://labs.google.com/ridefinder/images/mm_20_red.png 
 export class MapComponent implements OnInit {
   geocoder: any;
 
-  getLocations(){
+  getLocations(): Marker[]{
     var url="http://localhost:8080/locations";
     var markers: Marker[];
     this.httpClient.get(url).subscribe((res : Marker[])=>{
-      markers = res;
+      res.forEach(
+        val => {
+          var marker: Marker = {
+            lat: val["lat"],
+            lng: val["lng"],
+            iconUrl: greenIcon,
+            value: val["value"]
+          }
+          markers.push(marker);
+        }
+      )
     });
     return markers;
-  } 
+  }
 
   public mapStartup: Location = {
     lat: 52.202737,
@@ -73,6 +83,8 @@ export class MapComponent implements OnInit {
     this.location2
   ];
 
+  // public locations: Marker[] = this.getLocations();
+
   @ViewChild(AgmMap) map: AgmMap;
 
   constructor(public mapsApiLoader: MapsAPILoader,
@@ -87,8 +99,12 @@ export class MapComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
-
+    // this.httpClient.get('https://api.github.com/users/seeschweiler').subscribe(data => {
+    //   console.log(data)
+    // })
+    this.httpClient.get('http://localhost:8080/locations').subscribe(data => {
+      console.log(data)
+    })
   }
 }
