@@ -7,6 +7,8 @@ import { MarkerLabel, MouseEvent } from 'C:/Users/Dream Machines/a-pir/node_modu
 import { FitBoundsAccessor, FitBoundsDetails } from '@agm/core/services/fit-bounds';
 import * as mapTypes from '@agm/core/services/google-maps-types';
 import { MarkerManager } from '@agm/core/services/managers/marker-manager';
+import { AgmInfoWindow } from '@agm/core/directives/info-window';
+
 
 
 declare var google: any;
@@ -15,7 +17,11 @@ interface Marker {
   lat: number;
   lng: number;
   value: number;
-  iconUrl: string;
+  iconUrl1: string;
+  iconUrl2: string;
+  iconUrl3: string;
+  iconUrl4: string;
+  iconUrlx: string;
 }
 
 interface Location {
@@ -34,16 +40,22 @@ interface Location {
 export class MapComponent implements OnInit {
   geocoder: any;
   public location: Location = {
-    lat: 52.222549,
-    lng: 21.004424,
+    lat: 52.202737,
+    lng: 21.001095,
     marker: {
       lat: 52.202737,
       lng: 21.001095,
       value: 11,
-      iconUrl: "http://labs.google.com/ridefinder/images/mm_20_green.png "
+      iconUrl1: "http://labs.google.com/ridefinder/images/mm_20_green.png ",
+      iconUrl2: "http://labs.google.com/ridefinder/images/mm_20_yellow.png ",
+      iconUrl3: "http://labs.google.com/ridefinder/images/mm_20_orange.png ",
+      iconUrl4: "http://labs.google.com/ridefinder/images/mm_20_red.png ",
+      iconUrlx: " "
     },
     zoom: 13
   };
+
+
 
   @ViewChild(AgmMap) map: AgmMap;
 
