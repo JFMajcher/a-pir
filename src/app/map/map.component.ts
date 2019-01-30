@@ -31,6 +31,27 @@ const yellowIcon: string = "http://labs.google.com/ridefinder/images/mm_20_yello
 const orangeIcon: string = "http://labs.google.com/ridefinder/images/mm_20_orange.png ";
 const redIcon: string = "http://labs.google.com/ridefinder/images/mm_20_red.png ";
 
+const postBody: any = {
+  metrics: [
+    {
+      tags: {},
+      name: "air_pollution",
+      group_by: [
+        {
+          name: "tag",
+          tags: [
+            "id"
+          ]
+        }
+      ],
+      limit: "1"
+    }
+  ],
+  plugins: [],
+  cache_time: 0,
+  start_absolute: 0
+}
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -68,42 +89,22 @@ export class MapComponent implements OnInit {
   getLocations(): Marker[]{
     var url="http://localhost:8080/api/v1/datapoints/query";
     var result: Marker[] = [];
-    this.httpClient.post<Marker[]>(url,
-      {
-        metrics: [
-          {
-            tags: {},
-            name: "air_pollution",
-            group_by: [
-              {
-                name: "tag",
-                tags: [
-                  "id"
-                ]
-              }
-            ],
-            limit: "1"
-          }
-        ],
-        plugins: [],
-        cache_time: 0,
-        start_absolute: 0
-      }
-      ).subscribe(data => {
-      data["queries"][0]["results"].forEach(element => {
-        // element.iconUrl = this.resolveIconUrl(element.value);
-        // result.push(element)
-        var marker: Marker = {
-          lat: element["tags"]["latitude"][0],
-          lng: element["tags"]["longitude"][0],
-          value: element["values"][0][1],
-          iconUrl: this.resolveIconUrl(element["values"][0][1])
-        }
-        result.push(marker)
-      });
+    this.httpClient.post<Marker[]>(url, postBody).subscribe(data => {
+      this.filterMarkersFromResponse(data, result);
     })
-
     return result;
+  }
+
+  filterMarkersFromResponse(body: any, result: Marker[]): void {
+    body["queries"][0]["results"].forEach(element => {
+      var marker: Marker = {
+        lat: element["tags"]["latitude"][0],
+        lng: element["tags"]["longitude"][0],
+        value: element["values"][0][1],
+        iconUrl: this.resolveIconUrl(element["values"][0][1])
+      }
+      result.push(marker);
+    });
   }
 
   resolveIconUrl(value: number): string {
