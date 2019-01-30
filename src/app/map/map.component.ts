@@ -3,7 +3,7 @@ import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { MarkerLabel, MouseEvent } from 'node_modules/map-types';
 import { FitBoundsAccessor, FitBoundsDetails } from '@agm/core/services/fit-bounds';
 import * as mapTypes from '@agm/core/services/google-maps-types';
@@ -40,22 +40,35 @@ export class MapComponent implements OnInit {
   geocoder: any;
 
   getLocations(): Marker[]{
-    var url="http://localhost:8080/locations";
+    var url="http://localhost:8080/markers";
     var markers: Marker[];
-    this.httpClient.get(url).subscribe((res : Marker[])=>{
-      res.forEach(
-        val => {
-          var marker: Marker = {
-            lat: val["lat"],
-            lng: val["lng"],
-            iconUrl: greenIcon,
-            value: val["value"]
-          }
-          markers.push(marker);
-        }
-      )
-    });
-    return markers;
+    // this.httpClient.get(url).subscribe((res : Marker[])=>{
+    //   markers = res;
+      // res.forEach(
+      //   val => {
+      //     var marker: Marker = {
+      //       lat: val["lat"],
+      //       lng: val["lng"],
+      //       iconUrl: greenIcon,
+      //       value: val["value"]
+      //     }
+      //     markers.push(marker);
+      //   }
+      // )
+    // });
+    var result: Marker[] = [];
+    var marker: Marker;
+    // this.httpClient.get(url).subscribe(data => {
+    //   console.log(data)
+    //   result = data
+    // });
+    this.httpClient.get<Marker[]>(url).subscribe(data => {
+      data.forEach(element => {
+        result.push(element)
+      });
+    })
+
+    return result;
   }
 
   public mapStartup: Location = {
@@ -78,12 +91,13 @@ export class MapComponent implements OnInit {
     iconUrl: orangeIcon
   };
 
-  public locations: Marker[] = [
-    this.location,
-    this.location2
-  ];
+  // public locations: Marker[] = [
+  //   this.location,
+  //   this.location2
+  // ];
 
-  // public locations: Marker[] = this.getLocations();
+  public locations: Marker[] = this.getLocations();
+  // public dupa = this.getLocations();
 
   @ViewChild(AgmMap) map: AgmMap;
 
@@ -103,8 +117,8 @@ export class MapComponent implements OnInit {
     // this.httpClient.get('https://api.github.com/users/seeschweiler').subscribe(data => {
     //   console.log(data)
     // })
-    this.httpClient.get('http://localhost:8080/locations').subscribe(data => {
-      console.log(data)
-    })
+    // this.httpClient.get('http://localhost:8080/markers').subscribe(data => {
+    //   console.log(data)
+    // })
   }
 }
