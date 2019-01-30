@@ -64,6 +64,20 @@ export class MapComponent implements OnInit {
     // });
     this.httpClient.get<Marker[]>(url).subscribe(data => {
       data.forEach(element => {
+        
+        if(element.value < 10) {
+          element.iconUrl = greenIcon;
+        }
+        else if(element.value >= 10 && element.value < 20) {
+          element.iconUrl = yellowIcon;
+        }
+        else if(element.value >= 20 && element.value < 30) {
+          element.iconUrl = orangeIcon;
+        }
+        else if(element.value >= 30) {
+          element.iconUrl = redIcon;
+        }
+
         result.push(element)
       });
     })
