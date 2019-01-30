@@ -22,7 +22,7 @@ interface Marker {
 interface Location {
   lat: number;
   lng: number;
-  viewport?: Object;
+  viewport?: Object; 
   zoom: number;
 }
 
@@ -66,12 +66,40 @@ export class MapComponent implements OnInit {
   }
 
   getLocations(): Marker[]{
-    var url="http://localhost:8080/markers";
+    var url="http://localhost:8080/api/v1/datapoints/query";
     var result: Marker[] = [];
-    this.httpClient.get<Marker[]>(url).subscribe(data => {
-      data.forEach(element => {
-        element.iconUrl = this.resolveIconUrl(element.value);
-        result.push(element)
+    this.httpClient.post<Marker[]>(url,
+      {
+        metrics: [
+          {
+            tags: {},
+            name: "air_pollution",
+            group_by: [
+              {
+                name: "tag",
+                tags: [
+                  "id"
+                ]
+              }
+            ],
+            limit: "1"
+          }
+        ],
+        plugins: [],
+        cache_time: 0,
+        start_absolute: 0
+      }
+      ).subscribe(data => {
+      data["queries"][0]["results"].forEach(element => {
+        // element.iconUrl = this.resolveIconUrl(element.value);
+        // result.push(element)
+        var marker: Marker = {
+          lat: element["tags"]["latitude"][0],
+          lng: element["tags"]["longitude"][0],
+          value: element["values"][0][1],
+          iconUrl: this.resolveIconUrl(element["values"][0][1])
+        }
+        result.push(marker)
       });
     })
 
