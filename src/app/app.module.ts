@@ -14,6 +14,7 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
 import { ONasComponent } from './o-nas/o-nas.component';
 import { RejestracjaComponent } from './rejestracja/rejestracja.component';
 
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RejestracjaComponent } from './rejestracja/rejestracja.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyAtZcRzMkFXA4GwE3HYUYONuK_9FSy1xPw' }),
     FormsModule,

@@ -1,6 +1,7 @@
-import { Component, Input, ViewChild, NgZone, OnInit, AfterContentInit, ContentChildren, Directive, EventEmitter, OnChanges, OnDestroy, Output, QueryList, SimpleChange, forwardRef } from '@angular/core';
+import { Component, Input, ViewChild, NgZone, OnInit, AfterContentInit, ContentChildren, Directive, EventEmitter, OnChanges, OnDestroy, Output, QueryList, SimpleChange, forwardRef, Injectable } from '@angular/core';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
+import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MarkerLabel, MouseEvent } from 'node_modules/map-types';
@@ -29,7 +30,19 @@ const greenIcon: string = "http://labs.google.com/ridefinder/images/mm_20_green.
 const yellowIcon: string = "http://labs.google.com/ridefinder/images/mm_20_yellow.png ";
 const orangeIcon: string = "http://labs.google.com/ridefinder/images/mm_20_orange.png ";
 const redIcon: string = "http://labs.google.com/ridefinder/images/mm_20_red.png ";
-// const iconUrlx: string = " ";
+
+@Injectable()
+class LocationService {
+  
+  url="http://localhost:8080/locations";
+
+  constructor(private http : HttpClient){};
+
+  getRecommendations(){
+    return this.http.get(this.url);
+  }
+}
+
 
 @Component({
   selector: 'app-map',
