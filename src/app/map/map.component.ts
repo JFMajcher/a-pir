@@ -31,19 +31,6 @@ const yellowIcon: string = "http://labs.google.com/ridefinder/images/mm_20_yello
 const orangeIcon: string = "http://labs.google.com/ridefinder/images/mm_20_orange.png ";
 const redIcon: string = "http://labs.google.com/ridefinder/images/mm_20_red.png ";
 
-@Injectable()
-class LocationService {
-  
-  url="http://localhost:8080/locations";
-
-  constructor(private http : HttpClient){};
-
-  getRecommendations(){
-    return this.http.get(this.url);
-  }
-}
-
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -51,6 +38,15 @@ class LocationService {
 })
 export class MapComponent implements OnInit {
   geocoder: any;
+
+  getLocations(){
+    var url="http://localhost:8080/locations";
+    var markers: Marker[];
+    this.httpClient.get(url).subscribe((res : Marker[])=>{
+      markers = res;
+    });
+    return markers;
+  } 
 
   public mapStartup: Location = {
     lat: 52.202737,
@@ -81,7 +77,8 @@ export class MapComponent implements OnInit {
 
   constructor(public mapsApiLoader: MapsAPILoader,
     private zone: NgZone,
-    private wrapper: GoogleMapsAPIWrapper) {
+    private wrapper: GoogleMapsAPIWrapper,
+    private httpClient: HttpClient) {
     this.mapsApiLoader = mapsApiLoader;
     this.zone = zone;
     this.wrapper = wrapper;
